@@ -2,3 +2,4 @@ user_git_links.md
 .vagrant
 .ansible
 playbook_examples/library/__pycache__/
+uv.lock
