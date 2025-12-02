@@ -1,0 +1,19 @@
+services:
+  web-01:
+    image: httpd:latest
+    container_name: web-01
+    ports:
+      - "80:80"
+    depends_on:
+      - mariadb-01
+
+  mariadb-01:
+    image: mariadb:latest
+    container_name: mariadb-01
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssword
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:
