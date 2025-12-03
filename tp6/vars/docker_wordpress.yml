@@ -1,1 +1,4 @@
 run_user: vagrant
+db_name: wordpressdb
+db_user: wordpress_user
+db_password: mysuperpassword2

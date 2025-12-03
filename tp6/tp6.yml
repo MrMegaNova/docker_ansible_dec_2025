@@ -17,12 +17,15 @@
 
     - name: Copier le fichier docker-compose.yml
       ansible.builtin.copy:
-        src: files/{{ item }}
+        src: files/Dockerfile
         dest: /home/{{ run_user }}/tp6/
         mode: '0644'
-      loop:
-        - docker-compose.yml
-        - Dockerfile
+
+    - name: Template le fichier docker-compose.yml
+      ansible.builtin.template:
+        src: templates/docker-compose.j2
+        dest: /home/{{ run_user }}/tp6/docker-compose.yml
+        mode: '0644'
 
     - name: Lancer les conteneurs avec docker-compose
       community.docker.docker_compose_v2:
