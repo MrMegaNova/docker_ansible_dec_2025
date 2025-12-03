@@ -1,0 +1,30 @@
+---
+- name: Executer une infra conteneurisée
+  hosts: all
+  remote_user: vagrant
+  become: true
+  become_user: root
+
+  vars_files:
+    - vars/docker_wordpress.yml
+
+  tasks:
+    - name: Creation d'un dossier de destination
+      ansible.builtin.file:
+        path: "/home/{{ run_user }}/tp6/"
+        state: directory
+        mode: '0755'
+
+    - name: Copier le fichier docker-compose.yml
+      ansible.builtin.copy:
+        src: files/{{ item }}
+        dest: /home/{{ run_user }}/tp6/
+        mode: '0644'
+      loop:
+        - docker-compose.yml
+        - Dockerfile
+
+    - name: Lancer les conteneurs avec docker-compose
+      community.docker.docker_compose_v2:
+        project_src: /home/{{ run_user }}/tp6/
+        state: present
