@@ -1,0 +1,33 @@
+---
+- name: Executer une infra conteneurisée
+  hosts: all
+  remote_user: vagrant
+  become: true
+  become_user: root
+
+
+  tasks:
+    - name: Creation d'un dossier de destination
+      ansible.builtin.file:
+        path: "/home/vagrant/tp5/"
+        state: directory
+        mode: '0755'
+
+    - name: Copier le fichier docker-compose.yml
+      ansible.builtin.copy:
+        src: files/{{ item }}
+        dest: /home/vagrant/tp5/
+        mode: '0644'
+      loop:
+        - docker-compose.yml
+        - index.html
+
+    - name: Lancer les conteneurs avec docker-compose
+      community.docker.docker_compose_v2:
+        project_src: /home/vagrant/tp5/
+        state: present
+      register: compose_result
+
+    - name: Afficher le résultat du lancement
+      ansible.builtin.debug:
+        var: compose_result

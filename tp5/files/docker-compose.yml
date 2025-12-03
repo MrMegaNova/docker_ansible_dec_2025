@@ -4,8 +4,12 @@ services:
     container_name: web-01
     ports:
       - "80:80"
+    volumes:
+      - mariadb_data:/test
     depends_on:
       - mariadb-01
+    networks:
+      - test_network
 
   mariadb-01:
     image: mariadb:latest
@@ -14,6 +18,12 @@ services:
       MYSQL_ROOT_PASSWORD: P@ssword
     volumes:
       - mariadb_data:/var/lib/mysql
+    networks:
+      - test_network
 
 volumes:
   mariadb_data:
+
+networks:
+  test_network:
+    name: test_network
